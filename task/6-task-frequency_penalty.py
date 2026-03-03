@@ -1,21 +1,17 @@
 from task.app.main import run
 
-# TODO:
-#  Try `frequency_penalty` parameter.
-#  Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's
-#  likelihood to repeat the same line verbatim. Higher values == less repetitive text.
-#       Range: -2.0 to 2.0
-#       Default: 0.0
-#  User massage: Explain the water cycle in simple terms for children
+frequency_penalty = 0.0
 
-run(
-    deployment_name='gpt-4o',
-    print_only_content=True,
-    # TODO:
-    #  Use `frequency_penalty` parameter with different range (-2.0 to 2.0).
-)
+print("Input the frequency penalty (-2.0 to 2.0):")
+frequency_penalty = float(input())
 
-# Pay attention that when we set for `gpt-4o` frequency_penalty as -2.0 - the request is running too long,
-# and in the result we can get something strange (such as repetitive words in the end).
-# Copy the results and then check with separate request and ask LLM where is more repetitive blocks in texts.
-# For Anthropic and Gemini this parameter will be ignored
+if frequency_penalty >= -2.0 and frequency_penalty <= 2.0:
+    print(f"You chose: {frequency_penalty}")
+    run(
+        deployment_name='gpt-4o',
+        frequency_penalty=frequency_penalty,
+        print_only_content=True,
+    )
+else:
+    print("Invalid frequency penalty")
+
